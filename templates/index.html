@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Flask Google Maps Example</title>
+    {{gmap.js}}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+    $(document).ready(function() {
+        $('.accordion').find('.accordion-toggle').click(function() {
+            $(this).next().slideToggle('600');
+            $(".accordion-content").not($(this).next()).slideUp('600');
+        });
+        $('.accordion-toggle').on('click', function() {
+            $(this).toggleClass('active').siblings().removeClass('active');
+        });
+     });
+</script>
+</head>
+<body style="margin:0;padding:0;">
+    <div id='wrapper'>
+    <div id='sidebar'>
+        <h1 class='font-title'>EXIF Tool</h1>
+        <p class='font-body'>Christine Bui COMP6441 18s1</p>
+        <br>
+    <form class="Form" action="">
+        <select class="form-control" name="sort">
+            <option value="" default selected>Sort results by...</option>
+            <option value="visits">Most visited</option>
+            <option value="dates">Recently visited</option>
+        </select>
+        <button style="margin:11px 0px; float:right;" type="submit" value="Sort">Sort</button>
+    </form>
+        <p class='font-title' style="padding-bottom:10px; margin-top:50px;">PLACES VISITED:</p>
+        <div id='posts' class="accordion" style="text-align:left;">
+            {% for key in info %}
+            <div class="accordion-toggle">
+                <p style="float:left;">{{ key }}&emsp;</p>
+                {% if sortby == "visits" %}
+                <div style="color:lightgrey;">You visited this area {{ info[key]['visits'] }} time(s).</div>
+                {% else %}
+                <div style="color:lightgrey;">You visited this area on {{ info[key]['date'] }}.</div>
+                {% endif %}
+            </div>
+            <div class="accordion-content">
+                {% for x in info[key] %}
+                <p>{{ info[key][x]}}</p>
+                {% endfor %} 
+            </div>
+            {% endfor %}
+         </div>
+    </div>
+
+    <div id='map'>
+    {{gmap.html}}
+    </div>
+   </body>
+</html>
